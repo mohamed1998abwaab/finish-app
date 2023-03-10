@@ -27,7 +27,7 @@ const mongoModel=mongoose.model("NEWCOL",sch);
 app.get('/',async(req,res)=>{
 
   
-   await res.send(req.body.name);
+   await res.send("Mahdi Ali");
    
   });
 
