@@ -30,7 +30,7 @@ app.get('/',async(req,res)=>{
    await res.send("Mahdi Ali");
    
   });
- pp.get('/data',async(req,res)=>{
+ app.get('/data',async(req,res)=>{
 
     const data=new Data({
       name:req.body.name,
