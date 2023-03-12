@@ -30,6 +30,13 @@ app.get('/',async(req,res)=>{
    await res.send("Mahdi Ali");
    
   });
+app.get('/post',async(req,res)=>{
+
+  
+   await res.send("this post page");
+   
+  });
+
 
 //post
 app.post('/post',async(req,res)=>{
