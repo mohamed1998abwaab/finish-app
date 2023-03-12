@@ -30,6 +30,22 @@ app.get('/',async(req,res)=>{
    await res.send("Mahdi Ali");
    
   });
+ pp.get('/data',async(req,res)=>{
+
+    const data=new Data({
+      name:req.body.name,
+      email:req.body.email,
+      password:req.body.password,
+    });
+    
+       data.save().then(
+        (result)=>{res.send(result);}
+       ).catch((err)=>{
+         console.log(err);
+       })
+    
+    
+   });
 app.get('/post',async(req,res)=>{
 
   
