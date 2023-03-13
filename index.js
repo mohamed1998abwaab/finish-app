@@ -3,7 +3,7 @@ const app=express();
 const mongoose = require('mongoose');
 app.use(express.json());
 const morgan=require('morgan');
-app.use(morgan('dev'));
+app.use(morgan('dev'));//
 
 mongoose.connect('mongodb+srv://mahdi:mahdi@cluster0.3lvnvig.mongodb.net/mahdi?retryWrites=true&w=majority',{
     useNewUrlParser:true,useUnifiedTopology:true
