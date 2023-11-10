@@ -92,7 +92,7 @@ app.post('/post',upload.single("imag_pro"),async(req,res)=>{
    
                 const data=new mongomodel({
                   title_pro:req.body.title_pro,
-                  imag_pro:"https://server-full-5.onrender.com/"+image_url,
+                  imag_pro:"https://last-version-finish-app.onrender.com"+image_url,
                   price_cash_pro:req.body.price_cash_pro,
                   price_installments_pro:req.body.price_installments_pro
                 });
