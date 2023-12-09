@@ -46,8 +46,23 @@ mongo.connect(url,{useNewUrlParser:true,useUnifiedTopology:true},
 
   }
   const mongoUser=new mongo.model("users",users);
+/////upload image
+var nameImage='';
 
-
+const storage=multer.diskStorage({
+  destination:(req,file,cb)=>{
+    cb(null,path.join(__dirname,"./images"))
+  },
+  filename:(req,file,cb)=>{
+    nameImage=file.originalname;
+    cb(null,file.originalname);
+    nameImage=file.originalname;
+  }  
+});
+const upload=multer({storage});
+app.post('/image',upload.single("image"),async (req,res)=>{
+  res.status(200).json({message:"image uploaded "})});
+///////end
 //get 
 app.get('/data',(req,res,next)=>{
 fetchid=req.params.id  ;
@@ -73,36 +88,34 @@ app.get('/data/:id',(req,res,next)=>{
 /////////////////////////////////
 
 
-const Storage =multer.diskStorage({
-  destination:function (req, file,cb){
-      cb(null,path.join(__dirname,'images'));
-  },
-  filename:function(req,file,cb){
-    image_url=new Date().toISOString().replace(/:/g,"-")+file.originalname;
-      cb(null,image_url);
-  }
-});
 
-const upload=multer({storage:Storage});
-///////////////////////////////////
-//get image
 //post
-app.post('/post',upload.single("imag_pro"),async(req,res)=>{
-  console.log("inside post function ");
-   
-                const data=new mongomodel({
-                  title_pro:req.body.title_pro,
-                  imag_pro:"https://last-version-finish-app.onrender.com/"+image_url,
+  app.post('/post',upload.single("imag_pro"),async(req,res)=>{
+    
+    if(res.status==404){
+      console.log(error)
+    }else{
+      try{
+        if(nameImage!=null){
+      console.log("inside post function ");  
+     await res.status(200).json({message:"image uploaded "})
+      const data= await new mongomodel({
+           title_pro:req.body.title_pro,
+                  imag_pro:'https://last-version-finish-app.onrender.com/'+nameImage
                   price_cash_pro:req.body.price_cash_pro,
                   price_installments_pro:req.body.price_installments_pro
-                });
-                const value =await data.save();
-                res.json(value);
-                console.log(req.body);
-                console.log(image_url);
-                
-});
-
+     
+      });
+      const value =await data.save();
+      await res.json(value);
+      console.log(req.body);
+    }
+    }catch(e){
+      console.log(e);
+    }
+    }
+  });
+//**********************************************************
 ///////////////another get from users
 app.get('/data_users',(req,res,next)=>{
   fetchid=req.params.id  ;
