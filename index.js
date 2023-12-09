@@ -99,7 +99,7 @@ app.get('/data/:id',(req,res,next)=>{
      await res.status(200).json({message:"image uploaded "})
       const data= await new mongomodel({
            title_pro:req.body.title_pro,
-                  imag_pro:'http:nameImage,
+                  imag_pro:nameImage,
                   price_cash_pro:req.body.price_cash_pro,
                   price_installments_pro:req.body.price_installments_pro
      
