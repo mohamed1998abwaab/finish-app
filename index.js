@@ -30,15 +30,13 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
 ////////////////////////////////////////////////////////////////////////////////////
  // الشركه لحفظ البيانات
 
- var product={
-  name :String,
-  price:Number,
-  count:Number,
-  decsription:String,
-  image:String
- }
- const products=new mongo.model("products",product);
- 
+ var sch={
+    title_pro: String,
+    imag_pro:String ,
+    price_cash_pro:Number,
+    price_installments_pro:Number
+}
+  const mongomodel = new mongo.model('product',sch);
 //upload images
 
 const storage=multer.diskStorage({
