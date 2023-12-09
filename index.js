@@ -49,7 +49,7 @@ const storage=multer.diskStorage({
     nameImage=file.originalname;
     cb(null,file.originalname);
     nameImage=file.originalname;
-    console.log('http://localhost:3000/'+nameImage);
+    console.log('http://localhost:9000/'+nameImage);
     //print(nameImage);
 
   }  
@@ -59,7 +59,7 @@ const upload=multer({storage});
 
 
 
-app.post('/image',upload.single("image"),async (req,res)=>{
+app.post('/image',upload.single("imag_pro"),async (req,res)=>{
   res.status(200).json({message:"image uploaded "})});
  
 
@@ -69,31 +69,33 @@ app.post('/image',upload.single("image"),async (req,res)=>{
 
  app.get('/data',async (req,res,next)=>{
   fetchid=req.params.id  ;
-  products.find(({id:fetchid}),(err,val)=>{
+  mongomodel.find(({id:fetchid}),(err,val)=>{
   if(err) throw err;
   res.send(val);
   })});
 
 
-  app.post('/post',upload.single("image"),async(req,res)=>{
+  app.post('/post',upload.single("imag_pro"),async(req,res)=>{
     
     if(res.status==404){
       console.log(error)
     }else{
       try{
         if(nameImage!=null){
-      console.log("inside post function ");  
+      console.log("inside post function "+'  http://localhost:9000/'+nameImage);  
      await res.status(200).json({message:"image uploaded "})
-      const data= await new products({
-        name:req.body.name,
-        price:req.body.price,
-        count:req.body.count,
-        decsription:req.body.decsription,
-        image:'http://localhost:3000/'+nameImage
+      const data= await new mongomodel({
+        title_pro:req.body.name,
+        imag_pro:'http://localhost:/'+nameImage,
+        price_cash_pro:req.body.price,
+        price_installments_pro:req.body.count,
+       
       });
       const value =await data.save();
       await res.json(value);
       console.log(req.body);
+      console.log('http://localhost:9000/'+nameImage);
+
     }
     }catch(e){
       console.log(e);
@@ -101,7 +103,6 @@ app.post('/image',upload.single("image"),async (req,res)=>{
     }
   
   });
-
   app.put('/update/:id',async(req,res,next)=>{
     const ID=req.params.id;
     const newData={
