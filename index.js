@@ -57,7 +57,7 @@ const storage=multer.diskStorage({
   }  
 });
 const upload=multer({storage});
-app.post('/image',upload.single("image"),async (req,res)=>{
+app.post('/image',upload.single("imag_pro"),async (req,res)=>{
   res.status(200).json({message:"image uploaded "})});
 ///////end
 //get 
