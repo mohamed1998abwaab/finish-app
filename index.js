@@ -52,7 +52,6 @@ const storage=multer.diskStorage({
     cb(null,path.join(__dirname,"./images"))
   },
   filename:(req,file,cb)=>{
-    nameImage=file.originalname;
     cb(null,file.originalname);
     nameImage=file.originalname;
   }  
