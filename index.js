@@ -133,8 +133,9 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
 
     
     
+const port = process.env.PORT || 4000;
 
-
-app.listen(3000,()=>{
-    console.log(" conected on port 3000... http://localhost:3000");
+app.listen(port,()=>{
+    console.log(" conected on port 3000... http://localhost: ${port}");
 });
+
