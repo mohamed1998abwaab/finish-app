@@ -34,12 +34,12 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
     price:Number,
     count:Number,
     details:String,
-    image:String
+    
    }
    const products=new mongo.model("products",product);
   
           ////upload iamge 
-
+/*
        const storage= multer.diskStorage({
             destination:function(req,file,cb){
               cb(null,path.join(__dirname,"./images"))
@@ -50,7 +50,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
           });
 
      const upload=multer({storage:storage});
-
+*/
 
    app.get('/data',(req,res,next)=>{
     fetchid=req.params.id  ;
