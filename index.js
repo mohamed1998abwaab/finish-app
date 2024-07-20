@@ -67,7 +67,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
         name:req.body.name,
         price:req.body.price,
         count:req.body.count,
-        decsription:req.body.details
+        decsription:req.body.decsription
       });
       const value =await data.save();
       res.json(value);
