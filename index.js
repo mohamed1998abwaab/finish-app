@@ -33,7 +33,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
     name :String,
     price:Number,
     count:Number,
-    details:String,
+    decsription:String,
     
    }
    const products=new mongo.model("products",product);
@@ -67,7 +67,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
         name:req.body.name,
         price:req.body.price,
         count:req.body.count,
-        details:req.body.details
+        decsription:req.body.details
       });
       const value =await data.save();
       res.json(value);
@@ -80,7 +80,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
         name:req.body.name,
         price:req.body.price,
         count:req.body.count,
-        details:req.body.details,
+        decsription:req.body.details,
     }
     const result=await products.findOneAndReplace({_id:ID}
       ,newData);
