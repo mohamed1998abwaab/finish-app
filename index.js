@@ -30,7 +30,7 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
   });///get item one from page view 
 
   var product={
-    name :{type:String ,  unique: true },
+    name :{type:String ,  unique: true , dropDups: true },
     price:Number,
     count:Number,
     decsription:String,
