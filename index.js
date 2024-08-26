@@ -22,12 +22,24 @@ var url1="mongodb+srv://Mahdi:mahdi@cluster0.7v8ud.mongodb.net/mahdi?retryWrites
 var url="mongodb+srv://mahdi:mahdi@cluster0.3lvnvig.mongodb.net/mahdi?retryWrites=true&w=majority";
 var databsae;
 var image_url;
+async function connectDB() {
+  try {
+    await mongo.connect(url1, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('Could not connect to MongoDB', err);
+  }
+}
 
-mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
-     function(err, db) {
-    if (err) throw err;   
-      console.log(" conected database successfuly ...");
-  });///get item one from page view 
+connectDB();
+// await mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
+//      function(err, db) {
+//     if (err) throw err;   
+//       console.log(" conected database successfuly ...");
+//   })///get item one from page view 
 
   var product={
     name :{type:String ,  unique: true , dropDups: true },
@@ -52,12 +64,12 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
      const upload=multer({storage:storage});
 
 
-   app.get('/data',(req,res,next)=>{
+   app.get('/data',async (req,res,next)=>{
+    console.log("data excuted");
     fetchid=req.params.id  ;
-    products.find(({id:fetchid}),(err,val)=>{
-    if(err) throw err;
-    res.send(val);
-    })});
+    let value = await products.find({id:fetchid});
+    return res.json(value);
+  });
   
   
     app.post('/post',upload.single('image') ,async(req,res)=>{
@@ -69,12 +81,23 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
       //   count:req.body.count,
       //   decsription:req.body.decsription
       // });
-      const value =await products.create({name:req.body.name,
-        price:req.body.price,
-        count:req.body.count,
-        decsription:req.body.decsription});
-      res.json(value);
-      console.log(req.body);
+      /*
+      في الكود ادناه نعمل select للمنتج حسب الاسم 
+      اذا كان موجود بالداتا راح ينفذ else
+      اذا مكان موجود راح يضيف المنتج
+      */
+      const isExsist = await products.findOne({name:req.body.name});
+      if(!isExsist){
+        const value =await products.create({name:req.body.name,
+          price:req.body.price,
+          count:req.body.count,
+          decsription:req.body.decsription});
+        res.json(value);
+        console.log(req.body);
+      }else{
+        return res.status(400).json({message : "this products is already exists"})
+      }
+      
     });
   
     app.put('/update/:id',async(req,res,next)=>{
@@ -139,6 +162,6 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
 const port = process.env.PORT || 4000;
 
 app.listen(port,()=>{
-    console.log(" conected on port 3000... http://localhost: ${port}");
+    console.log(" conected on port 4000... http://localhost: ${port}");
 });
 
