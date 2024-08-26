@@ -63,13 +63,16 @@ mongo.connect(url1,{useNewUrlParser:true,useUnifiedTopology:true},
     app.post('/post',upload.single('image') ,async(req,res)=>{
       console.log("inside post function ");
     
-      const data=new products({
-        name:req.body.name,
+      // const data=new products({
+      //   name:req.body.name,
+      //   price:req.body.price,
+      //   count:req.body.count,
+      //   decsription:req.body.decsription
+      // });
+      const value =await products.create({name:req.body.name,
         price:req.body.price,
         count:req.body.count,
-        decsription:req.body.decsription
-      });
-      const value =await data.create();
+        decsription:req.body.decsription});
       res.json(value);
       console.log(req.body);
     });
