@@ -46,6 +46,7 @@ connectDB();
     price:Number,
     count:Number,
     decsription:String,
+    image: { data: Buffer, contentType: String }
     
    }
    const products=new mongo.model("products",product);
