@@ -46,42 +46,34 @@ connectDB();
     price:Number,
     count:Number,
     decsription:String,
-    image: { data: Buffer, contentType: String }
+    image: {
+    data: Buffer,
+    contentType: String
+  }
+
     
    }
    const products=new mongo.model("products",product);
   
           ////upload iamge 
 
-       const storage= multer.diskStorage({
-            destination:function(req,file,cb){
-              cb(null,path.join(__dirname,"./images"))
-            },
-            filename(req,file,cb){
-              cb(null,newData().replace(/:/g,'_')+file.originalname)
-            }
-          });
+       const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
 
-     const upload=multer({storage:storage});
 
 
-   app.get('/data',async (req,res,next)=>{
-    console.log("data excuted");
-    fetchid=req.params.id  ;
-    let value = await products.find({id:fetchid});
-    return res.json(value);
-  });
-  
   
     app.post('/post',upload.single('image') ,async(req,res)=>{
       console.log("inside post function ");
     
-      // const data=new products({
-      //   name:req.body.name,
-      //   price:req.body.price,
-      //   count:req.body.count,
-      //   decsription:req.body.decsription
-      // });
+    
       /*
       في الكود ادناه نعمل select للمنتج حسب الاسم 
       اذا كان موجود بالداتا راح ينفذ else
@@ -92,7 +84,11 @@ connectDB();
         const value =await products.create({name:req.body.name,
           price:req.body.price,
           count:req.body.count,
-          decsription:req.body.decsription});
+          decsription:req.body.decsription,
+        image: {
+        data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+        contentType: 'image/png'
+      }  });
         res.json(value);
         console.log(req.body);
       }else{
@@ -100,7 +96,15 @@ connectDB();
       }
       
     });
+//////////////////////////get
+   app.get('/data',async (req,res,next)=>{
+    console.log("data excuted");
+    fetchid=req.params.id  ;
+    let value = await products.find({id:fetchid});
+    return res.json(value);
+  });
   
+  ////////////////////////put
     app.put('/update/:id',async(req,res,next)=>{
       const ID=req.params.id;
       const newData={
