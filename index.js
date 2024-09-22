@@ -20,8 +20,7 @@ app.use(express.static(path.join(__dirname,'images')));
 //yUxpIMoLyAUDqc67
 var url1="mongodb+srv://Mahdi:mahdi@cluster0.7v8ud.mongodb.net/mahdi?retryWrites=true&w=majority"
 var url="mongodb+srv://mahdi:mahdi@cluster0.3lvnvig.mongodb.net/mahdi?retryWrites=true&w=majority";
-var databsae;
-var image_url;
+
 async function connectDB() {
   try {
     await mongo.connect(url1, {
@@ -59,7 +58,7 @@ connectDB();
 
        const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, 'images/');
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
