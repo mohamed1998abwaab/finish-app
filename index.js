@@ -25,7 +25,8 @@ async function connectDB() {
   try {
     await mongo.connect(url1, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true,
     });
     console.log('Connected to MongoDB');
   } catch (err) {
@@ -69,7 +70,7 @@ const upload = multer({ storage: storage });
 
 
   /////////////////////post
-    app.post('/post',upload.single('image') ,async(req,res)=>{
+    app.post('/post',upload.single('file') ,async(req,res)=>{
       console.log("inside post function ");
       /*
       في الكود ادناه نعمل select للمنتج حسب الاسم 
@@ -79,14 +80,15 @@ const upload = multer({ storage: storage });
      try{
   const isExsist = await products.findOne({name:req.body.name});
       if(!isExsist){
-        const value =await products.create({name:req.body.name,
+        const value =await products.create(
+          {
+          name:req.body.name,
           price:req.body.price,
           count:req.body.count,
           decsription:req.body.decsription,
-        image: {
-        data: fs.readFileSync(path.join(__dirname + '/images/' + req.file.filename)),
-        contentType: 'image/png'
-      }  });
+        image: req.file.filename,
+        
+        });
         res.json(value);
         console.log(req.body);
       }else{
