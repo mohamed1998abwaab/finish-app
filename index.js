@@ -68,24 +68,23 @@ const upload = multer({ storage: storage });
 
 
 
-  
+  /////////////////////post
     app.post('/post',upload.single('image') ,async(req,res)=>{
       console.log("inside post function ");
-    
-    
       /*
       في الكود ادناه نعمل select للمنتج حسب الاسم 
       اذا كان موجود بالداتا راح ينفذ else
       اذا مكان موجود راح يضيف المنتج
       */
-      const isExsist = await products.findOne({name:req.body.name});
+     try{
+  const isExsist = await products.findOne({name:req.body.name});
       if(!isExsist){
         const value =await products.create({name:req.body.name,
           price:req.body.price,
           count:req.body.count,
           decsription:req.body.decsription,
         image: {
-        data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+        data: fs.readFileSync(path.join(__dirname + '/images/' + req.file.filename)),
         contentType: 'image/png'
       }  });
         res.json(value);
@@ -93,6 +92,7 @@ const upload = multer({ storage: storage });
       }else{
         return res.status(400).json({message : "this products is already exists"})
       }
+}catch(err){console.log(err);}
       
     });
 //////////////////////////get
