@@ -25,8 +25,7 @@ async function connectDB() {
   try {
     await mongo.connect(url1, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
+      useUnifiedTopology: true
     });
     console.log('Connected to MongoDB');
   } catch (err) {
